@@ -18,3 +18,12 @@ void snakeStart() {
   foodY = int(random(20));
   lastMove = millis();
 }
+
+void snakeKey(char k) {
+  if (snakeOver) {
+    snakeStart();
+    return;
+  }
+  if (k == 'a') dir = (dir + 3) % 4;
+  if (k == 'd') dir = (dir + 1) % 4;
+}
