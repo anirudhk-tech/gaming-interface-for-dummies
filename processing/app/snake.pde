@@ -31,6 +31,8 @@ void snakeKey(char k) {
 void snakeDraw() {
   if (!snakeOver && millis() - lastMove > 150) {
     lastMove = millis();
+    int tailX = sx[snakeLen - 1];
+    int tailY = sy[snakeLen - 1];
     for (int i = snakeLen - 1; i > 0; i--) {
       sx[i] = sx[i - 1];
       sy[i] = sy[i - 1];
@@ -39,11 +41,33 @@ void snakeDraw() {
     sy[0] += dy[dir];
 
     if (sx[0] < 0 || sx[0] >= 30 || sy[0] < 0 || sy[0] >= 20) snakeOver = true;
+    for (int i = 1; i < snakeLen; i++) {
+      if (sx[0] == sx[i] && sy[0] == sy[i]) snakeOver = true;
+    }
+    if (sx[0] == foodX && sy[0] == foodY) {
+      sx[snakeLen] = tailX;
+      sy[snakeLen] = tailY;
+      snakeLen++;
+      snakeScore++;
+      foodX = int(random(30));
+      foodY = int(random(20));
+    }
+    if (snakeOver && snakeScore > best[0]) best[0] = snakeScore;
   }
 
-  fill(0, 150, 0);
+  fill(255, 0, 0);
   noStroke();
+  rect(foodX * 20, foodY * 20, 20, 20);
+  fill(0, 150, 0);
   for (int i = 0; i < snakeLen; i++) {
     rect(sx[i] * 20, sy[i] * 20, 20, 20);
+  }
+
+  fill(0);
+  textSize(16);
+  text("Score: " + snakeScore, 10, 20);
+  if (snakeOver) {
+    textSize(30);
+    text("Game over - press a or d", 150, 200);
   }
 }
