@@ -31,6 +31,10 @@ void flappyDraw() {
     }
 
     if (birdY < 0 || birdY > mh) flapOver = true;
+    if (110 > pipeX && 90 < pipeX + 40) {
+      if (birdY - 10 < gapY - 60 || birdY + 10 > gapY + 60) flapOver = true;
+    }
+    if (flapOver && flapScore > best[2]) best[2] = flapScore;
   }
 
   fill(0, 150, 0);
@@ -39,4 +43,12 @@ void flappyDraw() {
   rect(pipeX, gapY + 60, 40, mh - gapY - 60);
   fill(255, 200, 0);
   ellipse(100, birdY, 20, 20);
+
+  fill(0);
+  textSize(16);
+  text("Score: " + flapScore, 10, 20);
+  if (flapOver) {
+    textSize(30);
+    text("Game over - press w", 180, 200);
+  }
 }
